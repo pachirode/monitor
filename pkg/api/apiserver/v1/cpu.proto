@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/pachirode/monitor/pkg/api/apiserver/v1;v1";
+
+message CPU {
+    // model 型号
+    string model = 1;
+    // architecture 架构
+    string architecture = 2;
+    // physical_cores 物理核心
+    string physical_cores = 3;
+    // logical_cpus 逻辑核心
+    string logical_cpus = 4;
+    // current_frequency 当前频率
+    string current_frequency = 5;
+    // usage 占用率
+    string usage = 6;
+    // createdAt 表示用户注册时间
+    google.protobuf.Timestamp createdAt = 7;
+    // updatedAt 表示用户最后更新时间
+    google.protobuf.Timestamp updatedAt = 8;
+}
+
+message GetCPUResponse {
+    CPU cpu = 1;
+}

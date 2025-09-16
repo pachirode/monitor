@@ -1,0 +1,173 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Monitor API",
+    "version": "1.0",
+    "contact": {
+      "name": "计算机资源监控",
+      "url": "https://github.com/pachirode/monitor",
+      "email": "pachirode@gmail.com"
+    }
+  },
+  "tags": [
+    {
+      "name": "Monitor"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/healthz": {
+      "get": {
+        "summary": "服务健康检查",
+        "operationId": "Healthz",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1HealthzResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "服务治理"
+        ]
+      }
+    },
+    "/v1/cpu": {
+      "get": {
+        "summary": "CPU 监控器",
+        "operationId": "CPUMonitor",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetCPUResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "资源监控"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "v1CPU": {
+      "type": "object",
+      "properties": {
+        "model": {
+          "type": "string",
+          "title": "model 型号"
+        },
+        "architecture": {
+          "type": "string",
+          "title": "architecture 架构"
+        },
+        "physicalCores": {
+          "type": "string",
+          "title": "physical_cores 物理核心"
+        },
+        "logicalCpus": {
+          "type": "string",
+          "title": "logical_cpus 逻辑核心"
+        },
+        "currentFrequency": {
+          "type": "string",
+          "title": "current_frequency 当前频率"
+        },
+        "usage": {
+          "type": "string",
+          "title": "usage 占用率"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "createdAt 表示用户注册时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "updatedAt 表示用户最后更新时间"
+        }
+      }
+    },
+    "v1GetCPUResponse": {
+      "type": "object",
+      "properties": {
+        "cpu": {
+          "$ref": "#/definitions/v1CPU"
+        }
+      }
+    },
+    "v1HealthzResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "#/definitions/v1ServiceStatus"
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "v1ServiceStatus": {
+      "type": "string",
+      "enum": [
+        "Healthy",
+        "Unhealthy"
+      ],
+      "default": "Healthy"
+    }
+  }
+}
