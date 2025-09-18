@@ -47,7 +47,7 @@
         ]
       }
     },
-    "/v1/cpu": {
+    "/v1/manager/cpu": {
       "get": {
         "summary": "CPU 监控器",
         "operationId": "CPUMonitor",
@@ -113,10 +113,12 @@
         },
         "physicalCores": {
           "type": "string",
+          "format": "int64",
           "title": "physical_cores 物理核心"
         },
         "logicalCpus": {
           "type": "string",
+          "format": "int64",
           "title": "logical_cpus 逻辑核心"
         },
         "currentFrequency": {
@@ -126,16 +128,6 @@
         "usage": {
           "type": "string",
           "title": "usage 占用率"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time",
-          "title": "createdAt 表示用户注册时间"
-        },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time",
-          "title": "updatedAt 表示用户最后更新时间"
         }
       }
     },

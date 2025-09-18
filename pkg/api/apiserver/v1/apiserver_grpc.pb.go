@@ -21,7 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	Monitor_Healthz_FullMethodName    = "/v1.Monitor/Healthz"
-	Monitor_CPUMonitor_FullMethodName = "/v1.Monitor/CPUMonitor"
+	Monitor_GetCPUInfo_FullMethodName = "/v1.Monitor/GetCPUInfo"
 )
 
 // MonitorClient is the client API for Monitor service.
@@ -29,7 +29,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MonitorClient interface {
 	Healthz(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HealthzResponse, error)
-	CPUMonitor(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetCPUResponse, error)
+	GetCPUInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetCPUResponse, error)
 }
 
 type monitorClient struct {
@@ -50,10 +50,10 @@ func (c *monitorClient) Healthz(ctx context.Context, in *emptypb.Empty, opts ...
 	return out, nil
 }
 
-func (c *monitorClient) CPUMonitor(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetCPUResponse, error) {
+func (c *monitorClient) GetCPUInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetCPUResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetCPUResponse)
-	err := c.cc.Invoke(ctx, Monitor_CPUMonitor_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Monitor_GetCPUInfo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func (c *monitorClient) CPUMonitor(ctx context.Context, in *emptypb.Empty, opts 
 // for forward compatibility.
 type MonitorServer interface {
 	Healthz(context.Context, *emptypb.Empty) (*HealthzResponse, error)
-	CPUMonitor(context.Context, *emptypb.Empty) (*GetCPUResponse, error)
+	GetCPUInfo(context.Context, *emptypb.Empty) (*GetCPUResponse, error)
 	mustEmbedUnimplementedMonitorServer()
 }
 
@@ -79,8 +79,8 @@ type UnimplementedMonitorServer struct{}
 func (UnimplementedMonitorServer) Healthz(context.Context, *emptypb.Empty) (*HealthzResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Healthz not implemented")
 }
-func (UnimplementedMonitorServer) CPUMonitor(context.Context, *emptypb.Empty) (*GetCPUResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CPUMonitor not implemented")
+func (UnimplementedMonitorServer) GetCPUInfo(context.Context, *emptypb.Empty) (*GetCPUResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCPUInfo not implemented")
 }
 func (UnimplementedMonitorServer) mustEmbedUnimplementedMonitorServer() {}
 func (UnimplementedMonitorServer) testEmbeddedByValue()                 {}
@@ -121,20 +121,20 @@ func _Monitor_Healthz_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Monitor_CPUMonitor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Monitor_GetCPUInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MonitorServer).CPUMonitor(ctx, in)
+		return srv.(MonitorServer).GetCPUInfo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Monitor_CPUMonitor_FullMethodName,
+		FullMethod: Monitor_GetCPUInfo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MonitorServer).CPUMonitor(ctx, req.(*emptypb.Empty))
+		return srv.(MonitorServer).GetCPUInfo(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -151,8 +151,8 @@ var Monitor_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Monitor_Healthz_Handler,
 		},
 		{
-			MethodName: "CPUMonitor",
-			Handler:    _Monitor_CPUMonitor_Handler,
+			MethodName: "GetCPUInfo",
+			Handler:    _Monitor_GetCPUInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

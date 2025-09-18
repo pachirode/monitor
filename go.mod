@@ -3,11 +3,13 @@ module github.com/pachirode/monitor
 go 1.24.6
 
 require (
+	github.com/StackExchange/wmi v1.2.1
 	github.com/gin-contrib/pprof v1.5.3
 	github.com/gin-gonic/gin v1.10.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.0
 	github.com/pachirode/pkg v0.0.3
 	github.com/prometheus/common v0.60.0
+	github.com/shirou/gopsutil v2.21.11+incompatible
 	github.com/shirou/gopsutil/v3 v3.23.6
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/pflag v1.0.5
@@ -17,6 +19,7 @@ require (
 	google.golang.org/grpc v1.69.4
 	google.golang.org/protobuf v1.36.6
 	k8s.io/apimachinery v0.32.1
+	k8s.io/kube-openapi v0.0.0-20241105132330-32ad38e42d3f
 )
 
 require (

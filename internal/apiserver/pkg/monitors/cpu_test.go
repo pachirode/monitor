@@ -7,7 +7,7 @@ import (
 )
 
 func TestCPUMonitor(t *testing.T) {
-	monitor := NewCPUMonitor()
+	monitor := NewCpuMonitor()
 	assert.NotNil(t, monitor)
 
 	println(fmt.Printf("CPU Usage: %.2f%%\n", monitor.getPercent()))
@@ -17,4 +17,19 @@ func TestCPUMonitor(t *testing.T) {
 	}
 
 	println(monitor.getModel())
+
+	freq, _ := monitor.getCurrentFrequency()
+	fmt.Printf("%.1f GHz", freq)
+}
+
+func TestMonitor(t *testing.T) {
+	m := NewCpuMonitor()
+	assert.NotNil(t, m)
+	m.Update()
+
+	for k, v := range m.GetStatsInfo() {
+		fmt.Printf("%s : %s\n", k, v)
+	}
+
+	println(m.GetStatsJSON())
 }

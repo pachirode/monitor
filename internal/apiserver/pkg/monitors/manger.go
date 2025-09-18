@@ -1,11 +1,13 @@
 package monitors
 
 type MonitorManager struct {
-	*CPUMonitor
+	*CpuMonitor
+	*DiskMonitor
 }
 
 func NewMonitorManager() *MonitorManager {
 	return &MonitorManager{
-		CPUMonitor: NewCPUMonitor(),
+		CpuMonitor:  NewCpuMonitor(),
+		DiskMonitor: NewDiskMonitor(),
 	}
 }

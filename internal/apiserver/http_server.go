@@ -42,6 +42,14 @@ func (c *ServerConfig) InstallRESTAPI(engine *gin.Engine) {
 
 	// 注册健康检查接口
 	engine.GET("/healthz", handler.Healthz)
+
+	v1 := engine.Group("/v1")
+	{
+		managerV1 := v1.Group("/manager")
+		{
+			managerV1.GET("cpu", handler.GetCPUInfo)
+		}
+	}
 }
 
 func InstallGenericAPI(engine *gin.Engine) {

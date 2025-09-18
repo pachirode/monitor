@@ -1,9 +1,11 @@
 package biz
 
-import "github.com/pachirode/monitor/internal/apiserver/pkg/monitors"
+import (
+	cpuv1 "github.com/pachirode/monitor/internal/apiserver/biz/v1/cpu"
+)
 
 type IBiz interface {
-	ManagerV1() *monitors.MonitorManager
+	CpuV1() cpuv1.CPUBiz
 }
 
 type biz struct {
@@ -15,6 +17,6 @@ func NewBiz() *biz {
 	return &biz{}
 }
 
-func (b *biz) ManagerV1() *monitors.MonitorManager {
-	return monitors.NewMonitorManager()
+func (b *biz) CpuV1() cpuv1.CPUBiz {
+	return cpuv1.New()
 }
