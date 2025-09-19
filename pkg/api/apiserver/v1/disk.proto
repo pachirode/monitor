@@ -6,17 +6,17 @@ import "google/protobuf/timestamp.proto";
 
 option go_package = "github.com/pachirode/monitor/pkg/api/apiserver/v1;v1";
 
-message CPU {
-    // model 型号
-    string model = 1;
-    // architecture 架构
-    string architecture = 2;
-    // physical_cores 物理核心
-    int64 physical_cores = 3;
-    // logical_cpus 逻辑核心
-    int64 logical_cpus = 4;
-    // current_frequency 当前频率
-    string current_frequency = 5;
+message Disk {
+    // mount_point 硬盘挂载点
+    string mount_point = 1;
+    // fstype 文件系统
+    string fstype = 2;
+    // total_size 硬盘总共大小
+    string total_size = 3;
+    // used_size 已使用大小
+    string used_size = 4;
+    // free_size 剩余空间
+    string free_size = 5;
     // usage 占用率
     string usage = 6;
     // createdAt 表示用户注册时间
@@ -25,6 +25,6 @@ message CPU {
     google.protobuf.Timestamp updatedAt = 8;
 }
 
-message GetCPUResponse {
-    CPU cpu = 1;
+message GetDisksResponse {
+    repeated Disk disk_list = 1;
 }

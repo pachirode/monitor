@@ -6,7 +6,7 @@ import (
 	"github.com/pachirode/pkg/log"
 )
 
-func (h *Handler) GetCPUInfo(ctx *gin.Context) {
-	log.W(ctx.Request.Context()).Infow("GetCPUInfo handler is called", "method", "GetCPUInfo", "status", "Monitor")
-	core.HandleJSONRequest(ctx, h.biz.CpuV1().GetCPUInfo)
+func (h *Handler) GetCpuInfo(ctx *gin.Context) {
+	log.W(ctx.Request.Context()).Infow("GetCpuInfo handler is called", "method", "GetCpuInfo", "status", "Monitor")
+	core.HandleJSONRequest(ctx, h.biz.CpuV1().GetCpuInfo)
 }

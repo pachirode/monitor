@@ -20,8 +20,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Monitor_Healthz_FullMethodName    = "/v1.Monitor/Healthz"
-	Monitor_GetCPUInfo_FullMethodName = "/v1.Monitor/GetCPUInfo"
+	Monitor_Healthz_FullMethodName         = "/v1.Monitor/Healthz"
+	Monitor_GetCpuInfo_FullMethodName      = "/v1.Monitor/GetCpuInfo"
+	Monitor_GetDiskInfos_FullMethodName    = "/v1.Monitor/GetDiskInfos"
+	Monitor_GetMemoryInfo_FullMethodName   = "/v1.Monitor/GetMemoryInfo"
+	Monitor_GetNetworkInfos_FullMethodName = "/v1.Monitor/GetNetworkInfos"
 )
 
 // MonitorClient is the client API for Monitor service.
@@ -29,7 +32,10 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MonitorClient interface {
 	Healthz(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*HealthzResponse, error)
-	GetCPUInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetCPUResponse, error)
+	GetCpuInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetCPUResponse, error)
+	GetDiskInfos(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetDisksResponse, error)
+	GetMemoryInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetMemoryResponse, error)
+	GetNetworkInfos(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetNetworksResponse, error)
 }
 
 type monitorClient struct {
@@ -50,10 +56,40 @@ func (c *monitorClient) Healthz(ctx context.Context, in *emptypb.Empty, opts ...
 	return out, nil
 }
 
-func (c *monitorClient) GetCPUInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetCPUResponse, error) {
+func (c *monitorClient) GetCpuInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetCPUResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetCPUResponse)
-	err := c.cc.Invoke(ctx, Monitor_GetCPUInfo_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Monitor_GetCpuInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *monitorClient) GetDiskInfos(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetDisksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetDisksResponse)
+	err := c.cc.Invoke(ctx, Monitor_GetDiskInfos_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *monitorClient) GetMemoryInfo(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetMemoryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetMemoryResponse)
+	err := c.cc.Invoke(ctx, Monitor_GetMemoryInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *monitorClient) GetNetworkInfos(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetNetworksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetNetworksResponse)
+	err := c.cc.Invoke(ctx, Monitor_GetNetworkInfos_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +101,10 @@ func (c *monitorClient) GetCPUInfo(ctx context.Context, in *emptypb.Empty, opts 
 // for forward compatibility.
 type MonitorServer interface {
 	Healthz(context.Context, *emptypb.Empty) (*HealthzResponse, error)
-	GetCPUInfo(context.Context, *emptypb.Empty) (*GetCPUResponse, error)
+	GetCpuInfo(context.Context, *emptypb.Empty) (*GetCPUResponse, error)
+	GetDiskInfos(context.Context, *emptypb.Empty) (*GetDisksResponse, error)
+	GetMemoryInfo(context.Context, *emptypb.Empty) (*GetMemoryResponse, error)
+	GetNetworkInfos(context.Context, *emptypb.Empty) (*GetNetworksResponse, error)
 	mustEmbedUnimplementedMonitorServer()
 }
 
@@ -79,8 +118,17 @@ type UnimplementedMonitorServer struct{}
 func (UnimplementedMonitorServer) Healthz(context.Context, *emptypb.Empty) (*HealthzResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Healthz not implemented")
 }
-func (UnimplementedMonitorServer) GetCPUInfo(context.Context, *emptypb.Empty) (*GetCPUResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetCPUInfo not implemented")
+func (UnimplementedMonitorServer) GetCpuInfo(context.Context, *emptypb.Empty) (*GetCPUResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCpuInfo not implemented")
+}
+func (UnimplementedMonitorServer) GetDiskInfos(context.Context, *emptypb.Empty) (*GetDisksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetDiskInfos not implemented")
+}
+func (UnimplementedMonitorServer) GetMemoryInfo(context.Context, *emptypb.Empty) (*GetMemoryResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMemoryInfo not implemented")
+}
+func (UnimplementedMonitorServer) GetNetworkInfos(context.Context, *emptypb.Empty) (*GetNetworksResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNetworkInfos not implemented")
 }
 func (UnimplementedMonitorServer) mustEmbedUnimplementedMonitorServer() {}
 func (UnimplementedMonitorServer) testEmbeddedByValue()                 {}
@@ -121,20 +169,74 @@ func _Monitor_Healthz_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Monitor_GetCPUInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Monitor_GetCpuInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(emptypb.Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MonitorServer).GetCPUInfo(ctx, in)
+		return srv.(MonitorServer).GetCpuInfo(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Monitor_GetCPUInfo_FullMethodName,
+		FullMethod: Monitor_GetCpuInfo_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MonitorServer).GetCPUInfo(ctx, req.(*emptypb.Empty))
+		return srv.(MonitorServer).GetCpuInfo(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Monitor_GetDiskInfos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MonitorServer).GetDiskInfos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Monitor_GetDiskInfos_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MonitorServer).GetDiskInfos(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Monitor_GetMemoryInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MonitorServer).GetMemoryInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Monitor_GetMemoryInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MonitorServer).GetMemoryInfo(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Monitor_GetNetworkInfos_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MonitorServer).GetNetworkInfos(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Monitor_GetNetworkInfos_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MonitorServer).GetNetworkInfos(ctx, req.(*emptypb.Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -151,8 +253,20 @@ var Monitor_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Monitor_Healthz_Handler,
 		},
 		{
-			MethodName: "GetCPUInfo",
-			Handler:    _Monitor_GetCPUInfo_Handler,
+			MethodName: "GetCpuInfo",
+			Handler:    _Monitor_GetCpuInfo_Handler,
+		},
+		{
+			MethodName: "GetDiskInfos",
+			Handler:    _Monitor_GetDiskInfos_Handler,
+		},
+		{
+			MethodName: "GetMemoryInfo",
+			Handler:    _Monitor_GetMemoryInfo_Handler,
+		},
+		{
+			MethodName: "GetNetworkInfos",
+			Handler:    _Monitor_GetNetworkInfos_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

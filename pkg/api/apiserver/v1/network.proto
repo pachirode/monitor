@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/pachirode/monitor/pkg/api/apiserver/v1;v1";
+
+message Network {
+    // name 接口名字
+    string name = 1;
+    // bytes_sent 发送
+    string bytes_sent = 2;
+    // bytes_receive 接收
+    string bytes_receive = 3;
+    // ip ipv4
+    string ip = 4;
+    // ipv6 ipv6
+    string ipv6 = 5;
+    // createdAt 表示用户注册时间
+    google.protobuf.Timestamp createdAt = 6;
+    // updatedAt 表示用户最后更新时间
+    google.protobuf.Timestamp updatedAt = 7;
+}
+
+message GetNetworksResponse {
+    repeated Network network_list = 1;
+}

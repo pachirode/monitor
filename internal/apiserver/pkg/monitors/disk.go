@@ -18,7 +18,7 @@ type DiskInfo struct {
 	TotalSize  string
 	UsedSize   string
 	FreeSize   string
-	Percent    string
+	Usage      string
 }
 
 func NewDiskMonitor() *DiskMonitor {
@@ -61,15 +61,20 @@ func (m *DiskMonitor) getDiskDynamicInfo() {
 			continue
 		}
 
-		m.DiskInfos[partition.Device] = DiskInfo{
-			UsedSize: fmt.Sprintf("%.2f GB", float64(usage.Used)/(1024*1024*1024)),
-			FreeSize: fmt.Sprintf("%.2f GB", float64(usage.Free)/(1024*1024*1024)),
-			Percent:  fmt.Sprintf("%.2f %%", usage.UsedPercent),
-		}
+		diskInfo := m.DiskInfos[partition.Device]
+		diskInfo.UsedSize = fmt.Sprintf("%.2f GB", float64(usage.Used)/(1024*1024*1024))
+		diskInfo.FreeSize = fmt.Sprintf("%.2f GB", float64(usage.Free)/(1024*1024*1024))
+		diskInfo.Usage = fmt.Sprintf("%.2f %%", usage.UsedPercent)
+		m.DiskInfos[partition.Device] = diskInfo
 	}
 }
 
 func (m *DiskMonitor) Update() {
 	m.getDiskStaticInfo()
 	m.getDiskDynamicInfo()
+}
+
+func (m *DiskMonitor) GetDiskInfos() map[string]DiskInfo {
+	m.Update()
+	return m.DiskInfos
 }

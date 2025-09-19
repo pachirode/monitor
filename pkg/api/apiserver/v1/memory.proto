@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package v1;
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/pachirode/monitor/pkg/api/apiserver/v1;v1";
+
+message Memory {
+    // memory_available 可用内存
+    string memory_available = 1;
+    // memory_total 总共内存
+    string memory_total = 2;
+    // memory_free 剩余内存
+    string memory_free = 3;
+    // memory_usage 已使用内存
+    string memory_usage = 4;
+    // memory_percent 内存占用比
+    string memory_percent = 5;
+    // swap_total 总共交换内存
+    string swap_total = 6;
+    // swap_free 剩余交换内存
+    string swap_free = 7;
+    // swap_usage 已使用交换内存
+    string swap_usage = 8;
+    // swap_percent 交换内存占用比
+    string swap_percent = 9;
+    // createdAt 表示用户注册时间
+    google.protobuf.Timestamp createdAt = 10;
+    // updatedAt 表示用户最后更新时间
+    google.protobuf.Timestamp updatedAt = 11;
+}
+
+message GetMemoryResponse {
+    Memory memoryInfo = 1;
+}

@@ -45,10 +45,10 @@ func (c *ServerConfig) InstallRESTAPI(engine *gin.Engine) {
 
 	v1 := engine.Group("/v1")
 	{
-		managerV1 := v1.Group("/manager")
-		{
-			managerV1.GET("cpu", handler.GetCPUInfo)
-		}
+		v1.GET("cpu", handler.GetCpuInfo)
+		v1.GET("disks", handler.GetDiskInfos)
+		v1.GET("memory", handler.GetMemoryInfo)
+		v1.GET("networks", handler.GetNetworkInfos)
 	}
 }
 

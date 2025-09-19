@@ -173,7 +173,7 @@ func (m *CpuMonitor) Update() {
 	}
 }
 
-func (m *CpuMonitor) GetCPUInfo() CpuInfo {
+func (m *CpuMonitor) GetCpuInfo() CpuInfo {
 	m.Update()
 	return CpuInfo{
 		Model:            m.monitor.StaticStats["model"].(string),

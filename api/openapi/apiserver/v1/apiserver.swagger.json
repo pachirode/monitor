@@ -47,7 +47,7 @@
         ]
       }
     },
-    "/v1/manager/cpu": {
+    "/v1/cpu": {
       "get": {
         "summary": "CPU 监控器",
         "operationId": "CPUMonitor",
@@ -56,6 +56,75 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/v1GetCPUResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "资源监控"
+        ]
+      }
+    },
+    "/v1/disks": {
+      "get": {
+        "summary": "Disk 监控器",
+        "operationId": "DiskMonitor",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetDisksResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "资源监控"
+        ]
+      }
+    },
+    "/v1/memory": {
+      "get": {
+        "summary": "Memory 监控器",
+        "operationId": "MemoryMonitor",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetMemoryResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "资源监控"
+        ]
+      }
+    },
+    "/v1/networks": {
+      "get": {
+        "summary": "Network 监控器",
+        "operationId": "NetworkMonitor",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1GetNetworksResponse"
             }
           },
           "default": {
@@ -128,6 +197,55 @@
         "usage": {
           "type": "string",
           "title": "usage 占用率"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "createdAt 表示用户注册时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "updatedAt 表示用户最后更新时间"
+        }
+      }
+    },
+    "v1Disk": {
+      "type": "object",
+      "properties": {
+        "mountPoint": {
+          "type": "string",
+          "title": "mount_point 硬盘挂载点"
+        },
+        "fstype": {
+          "type": "string",
+          "title": "fstype 文件系统"
+        },
+        "totalSize": {
+          "type": "string",
+          "title": "total_size 硬盘总共大小"
+        },
+        "usedSize": {
+          "type": "string",
+          "title": "used_size 已使用大小"
+        },
+        "freeSize": {
+          "type": "string",
+          "title": "free_size 剩余空间"
+        },
+        "usage": {
+          "type": "string",
+          "title": "usage 占用率"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "createdAt 表示用户注册时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "updatedAt 表示用户最后更新时间"
         }
       }
     },
@@ -136,6 +254,38 @@
       "properties": {
         "cpu": {
           "$ref": "#/definitions/v1CPU"
+        }
+      }
+    },
+    "v1GetDisksResponse": {
+      "type": "object",
+      "properties": {
+        "diskList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Disk"
+          }
+        }
+      }
+    },
+    "v1GetMemoryResponse": {
+      "type": "object",
+      "properties": {
+        "memoryInfo": {
+          "$ref": "#/definitions/v1Memory"
+        }
+      }
+    },
+    "v1GetNetworksResponse": {
+      "type": "object",
+      "properties": {
+        "networkList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Network"
+          }
         }
       }
     },
@@ -150,6 +300,92 @@
         },
         "message": {
           "type": "string"
+        }
+      }
+    },
+    "v1Memory": {
+      "type": "object",
+      "properties": {
+        "memoryAvailable": {
+          "type": "string",
+          "title": "memory_available 可用内存"
+        },
+        "memoryTotal": {
+          "type": "string",
+          "title": "memory_total 总共内存"
+        },
+        "memoryFree": {
+          "type": "string",
+          "title": "memory_free 剩余内存"
+        },
+        "memoryUsage": {
+          "type": "string",
+          "title": "memory_usage 已使用内存"
+        },
+        "memoryPercent": {
+          "type": "string",
+          "title": "memory_percent 内存占用比"
+        },
+        "swapTotal": {
+          "type": "string",
+          "title": "swap_total 总共交换内存"
+        },
+        "swapFree": {
+          "type": "string",
+          "title": "swap_free 剩余交换内存"
+        },
+        "swapUsage": {
+          "type": "string",
+          "title": "swap_usage 已使用交换内存"
+        },
+        "swapPercent": {
+          "type": "string",
+          "title": "swap_percent 交换内存占用比"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "createdAt 表示用户注册时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "updatedAt 表示用户最后更新时间"
+        }
+      }
+    },
+    "v1Network": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "title": "name 接口名字"
+        },
+        "bytesSent": {
+          "type": "string",
+          "title": "bytes_sent 发送"
+        },
+        "bytesReceive": {
+          "type": "string",
+          "title": "bytes_receive 接收"
+        },
+        "ip": {
+          "type": "string",
+          "title": "ip ipv4"
+        },
+        "ipv6": {
+          "type": "string",
+          "title": "ipv6 ipv6"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "createdAt 表示用户注册时间"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "updatedAt 表示用户最后更新时间"
         }
       }
     },

@@ -8,5 +8,5 @@ import (
 
 func (h *Handler) CPUMonitor(c *gin.Context) {
 	log.W(c.Request.Context()).Infow("CPUMonitor handler is called", "method", "CPUMonitor", "status", "Monitor")
-	core.HandleJSONRequest(c, h.biz.CpuV1().GetCPUInfo)
+	core.HandleJSONRequest(c, h.biz.CpuV1().GetCpuInfo)
 }
